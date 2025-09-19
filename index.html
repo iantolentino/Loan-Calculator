@@ -31,27 +31,26 @@
 
     .container {
       width: 90%;
-      max-width: 800px;
+      max-width: 1000px;
       background: var(--card);
       padding: 2rem;
       border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
     }
 
     h1 {
+      grid-column: span 2;
       text-align: center;
-      margin-bottom: 1.5rem;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
+      margin-bottom: 1rem;
     }
 
     .input-group {
       display: flex;
       flex-direction: column;
+      margin-bottom: 1rem;
     }
 
     label {
@@ -64,10 +63,8 @@
       border: 1px solid #ccc;
       border-radius: 8px;
       font-size: 1rem;
-    }
-
-    .results {
-      margin-top: 2rem;
+      background: var(--bg);
+      color: var(--text);
     }
 
     .results h2 {
@@ -83,9 +80,15 @@
       margin-bottom: 0.6rem;
     }
 
-    .toggle-theme {
-      display: block;
-      margin: 1rem auto;
+    .buttons {
+      grid-column: span 2;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    button {
       padding: 0.5rem 1.5rem;
       border: none;
       border-radius: 20px;
@@ -97,10 +100,11 @@
   </style>
 </head>
 <body>
-  <div class="container">
+  <div class="container" id="calculator">
     <h1>Loan Repayment Calculator</h1>
-    
-    <div class="grid">
+
+    <!-- Solver (left side) -->
+    <div>
       <div class="input-group">
         <label for="price">Total Item Price</label>
         <input type="number" id="price" placeholder="Enter total price">
@@ -115,14 +119,20 @@
       </div>
     </div>
 
+    <!-- Results (right side) -->
     <div class="results">
       <h2>Estimated Monthly Payments</h2>
       <div id="payments"></div>
     </div>
 
-    <button class="toggle-theme" onclick="toggleTheme()">Toggle Dark/Light</button>
+    <!-- Buttons -->
+    <div class="buttons">
+      <button onclick="toggleTheme()">Toggle Dark/Light</button>
+      <button onclick="downloadImage()">Download as Image</button>
+    </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script>
     const priceInput = document.getElementById('price');
     const downInput = document.getElementById('downpayment');
@@ -158,8 +168,18 @@
         document.body.dataset.theme === 'dark' ? 'light' : 'dark';
     }
 
-    // Default to light mode
-    document.body.dataset.theme = 'light';
+    function downloadImage() {
+      const calculator = document.getElementById('calculator');
+      html2canvas(calculator).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'loan_calculator.png';
+        link.href = canvas.toDataURL();
+        link.click();
+      });
+    }
+
+    // Start in dark mode
+    document.body.dataset.theme = 'dark';
   </script>
 </body>
 </html>
