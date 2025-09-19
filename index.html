@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loan Repayment Calculator</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #000000;
+      --card: #f5f5f5;
+    }
+
+    [data-theme="dark"] {
+      --bg: #111111;
+      --text: #ffffff;
+      --card: #1e1e1e;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 800px;
+      background: var(--card);
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      font-size: 0.9rem;
+      margin-bottom: 0.3rem;
+    }
+
+    input {
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    .results {
+      margin-top: 2rem;
+    }
+
+    .results h2 {
+      margin-bottom: 1rem;
+    }
+
+    .result-card {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.8rem 1rem;
+      background: var(--bg);
+      border-radius: 8px;
+      margin-bottom: 0.6rem;
+    }
+
+    .toggle-theme {
+      display: block;
+      margin: 1rem auto;
+      padding: 0.5rem 1.5rem;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      background: var(--text);
+      color: var(--bg);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Loan Repayment Calculator</h1>
+    
+    <div class="grid">
+      <div class="input-group">
+        <label for="price">Total Item Price</label>
+        <input type="number" id="price" placeholder="Enter total price">
+      </div>
+      <div class="input-group">
+        <label for="downpayment">Downpayment</label>
+        <input type="number" id="downpayment" placeholder="Enter downpayment">
+      </div>
+      <div class="input-group">
+        <label for="interest">Interest Rate (%)</label>
+        <input type="number" id="interest" placeholder="Enter interest rate" value="5">
+      </div>
+    </div>
+
+    <div class="results">
+      <h2>Estimated Monthly Payments</h2>
+      <div id="payments"></div>
+    </div>
+
+    <button class="toggle-theme" onclick="toggleTheme()">Toggle Dark/Light</button>
+  </div>
+
+  <script>
+    const priceInput = document.getElementById('price');
+    const downInput = document.getElementById('downpayment');
+    const interestInput = document.getElementById('interest');
+    const paymentsDiv = document.getElementById('payments');
+    const months = [6, 9, 12, 18, 24, 30, 36];
+
+    function calculatePayments() {
+      const price = parseFloat(priceInput.value) || 0;
+      const down = parseFloat(downInput.value) || 0;
+      const rate = (parseFloat(interestInput.value) || 0) / 100;
+
+      const loanAmount = price - down;
+
+      paymentsDiv.innerHTML = '';
+      months.forEach(m => {
+        const totalWithInterest = loanAmount * (1 + rate);
+        const monthly = totalWithInterest / m;
+
+        const card = document.createElement('div');
+        card.className = 'result-card';
+        card.innerHTML = `<span>${m} months</span> <span>₱${monthly.toFixed(2)}</span>`;
+        paymentsDiv.appendChild(card);
+      });
+    }
+
+    [priceInput, downInput, interestInput].forEach(input => {
+      input.addEventListener('input', calculatePayments);
+    });
+
+    function toggleTheme() {
+      document.body.dataset.theme = 
+        document.body.dataset.theme === 'dark' ? 'light' : 'dark';
+    }
+
+    // Default to light mode
+    document.body.dataset.theme = 'light';
+  </script>
+</body>
+</html>
