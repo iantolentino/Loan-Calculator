@@ -22,7 +22,6 @@ This tool helps users estimate their monthly repayment amounts based on total pr
 1. Clone this repository:  
    ```bash
    git clone https://github.com/yourusername/loan-repayment-calculator.git
-``
 
 2. Open `index.html` in your browser.
 3. Start calculating! 🎉
