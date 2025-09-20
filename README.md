@@ -18,10 +18,6 @@ This tool helps users estimate their monthly repayment amounts based on total pr
 5. Use the **Toggle Dark/Light** button to switch themes.  
 6. Click **Download as Image** to save the repayment schedule.  
 
-## 📷 Example
-![Loan Calculator Screenshot](example.png)  
-*(Replace with actual screenshot if available)*  
-
 ## 🚀 Setup
 1. Clone this repository:  
    ```bash
